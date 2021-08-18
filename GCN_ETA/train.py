@@ -37,20 +37,7 @@ print(exfeatures.size())
 X = exfeatures
 Y = labels
 
-print("SGC+xgboost分类器")
-scorings = ['accuracy', 'precision', 'recall', 'f1']
-xgtime = []
-for scoring in scorings:
-    start = time.process_time()
-    xgb = XGBClassifier(objective='binary:logitraw')
-    scores = cross_val_score(xgb, X, Y, cv=5, scoring=scoring)  # cv为迭代次数。
-    # print(scores)  # 打印输出每次迭代的度量值（准确度）
-    end = time.process_time()
-    xgtime.append(end - start)
-    print(scoring + ": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-print("SGC+xgboost分类器时间：{:.0f}flows/s" .format(X.shape[0]/(5*(np.mean(xgtime)+precompute_time))))
-
-print('SGC+决策树分类器')
+print('GCN-ETA')
 scorings = ['accuracy', 'precision', 'recall', 'f1']
 dttime = []
 for scoring in scorings:
@@ -61,4 +48,4 @@ for scoring in scorings:
     dttime.append(end - start)
     # print(scores)  # 打印输出每次迭代的度量值（准确度）
     print(scoring+": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-print("SGC+决策树分类器时间：{:.0f}flows/s" .format(X.shape[0]/(5*(np.mean(dttime)+precompute_time))))
+print("GCN-ETA检测速度：{:.0f}flows/s" .format(X.shape[0]/(5*(np.mean(dttime)+precompute_time))))
