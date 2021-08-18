@@ -46,6 +46,6 @@ for scoring in scorings:
     scores = cross_val_score(clf, X, Y, cv=5, scoring=scoring)  # cv为迭代次数。
     end = time.process_time()
     dttime.append(end - start)
-    # print(scores)  # 打印输出每次迭代的度量值（准确度）
+    # print(scores) 
     print(scoring+": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
 print("GCN-ETA检测速度：{:.0f}flows/s" .format(X.shape[0]/(5*(np.mean(dttime)+precompute_time))))
