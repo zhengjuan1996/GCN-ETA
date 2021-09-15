@@ -93,8 +93,8 @@ def test():
 
 
 # train
-# for exfeature in [7]:
-for exfeature in range(5,20):
+for exfeature in [7]:
+# for exfeature in range(5,20):
     # Model and optimizer
     #训练GCN
     model = GCN(nfeat=features.shape[1],
@@ -110,7 +110,7 @@ for exfeature in range(5,20):
         features = features.cuda()
         adj = adj.cuda()
 
-    idx_train1, idx_test, _, _ = train_test_split(range(features.shape[0]), labels, random_state=1, test_size=0.2)
+    idx_train1, idx_test, _, _ = train_test_split(range(features.shape[0]), labels, random_state=1, test_size=0.8)
     idx_train, idx_val, _, _ = train_test_split(idx_train1, labels[idx_train1], random_state=2, test_size=0.1)
     idx_train = torch.LongTensor(idx_train)
     idx_val = torch.LongTensor(idx_val)
@@ -130,8 +130,8 @@ for exfeature in range(5,20):
 
     # 训练ML
     exfeature_times = t_end - t_start
-    Y = labels
-    X = output_feature.cpu().detach().numpy()
+    Y = labels[idx_test]
+    X = output_feature[idx_test].cpu().detach().numpy()
     print(X.shape)
     # print(Counter(Y).items())
     print("提取特征数为："+str(exfeature))
@@ -146,7 +146,7 @@ for exfeature in range(5,20):
         end = time.process_time()
         xgtime.append((end - start)/5)
         print(scoring + ": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-    print("GCN+xgboost分类器时间：{:.0f}flows/s" .format(X.shape[0]/(5*(np.mean(xgtime)+exfeature_times))))
+    print("GCN+xgboost分类器速度：{:.0f}flows/s" .format(X.shape[0]/(5*(np.mean(xgtime)+exfeature_times))))
 
     print('GCN+决策树分类器')
     scorings = ['accuracy', 'precision', 'recall', 'f1']
@@ -159,7 +159,7 @@ for exfeature in range(5,20):
         end = time.process_time()
         dttime.append((end - start)/5)
         print(scoring+": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-    print("GCN+决策树分类器时间：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(dttime) + exfeature_times))))
+    print("GCN+决策树分类器速度：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(dttime) + exfeature_times))))
 
     print('GCN+随机森林分类器')
     scorings = ['accuracy', 'precision', 'recall', 'f1']
@@ -172,7 +172,7 @@ for exfeature in range(5,20):
         end = time.process_time()
         rftime.append((end - start) / 5)
         print(scoring + ": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-    print("GCN+随机森林分类器时间：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(rftime) + exfeature_times))))
+    print("GCN+随机森林分类器速度：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(rftime) + exfeature_times))))
 
     print('GCN+贝叶斯分类器')
     scorings = ['accuracy', 'precision', 'recall', 'f1']
@@ -185,7 +185,7 @@ for exfeature in range(5,20):
         end = time.process_time()
         bltime.append((end - start) / 5)
         print(scoring + ": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-    print("GCN+贝叶斯分类器时间：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(bltime) + exfeature_times))))
+    print("GCN+贝叶斯分类器速度：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(bltime) + exfeature_times))))
 
     print('GCN+逻辑回归分类器')
     scorings = ['accuracy', 'precision', 'recall', 'f1']
@@ -198,7 +198,7 @@ for exfeature in range(5,20):
         end = time.process_time()
         lrtime.append((end - start) / 5)
         print(scoring + ": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-    print("GCN+逻辑回归分类器时间：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(lrtime) + exfeature_times))))
+    print("GCN+逻辑回归分类器速度：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(lrtime) + exfeature_times))))
 
     print('GCN+knn分类器')
     scorings = ['accuracy', 'precision', 'recall', 'f1']
@@ -211,6 +211,6 @@ for exfeature in range(5,20):
         end = time.process_time()
         kntime.append((end - start) / 5)
         print(scoring + ": %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() * 2))
-    print("GCN+knn分类器时间：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(kntime) + exfeature_times))))
+    print("GCN+knn分类器速度：{:.0f}flows/s".format(X.shape[0] / (5 * (np.mean(kntime) + exfeature_times))))
 
 
